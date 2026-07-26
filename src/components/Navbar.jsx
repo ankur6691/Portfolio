@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Navbar() {
   const [hoveredPath, setHoveredPath] = useState(null);
   const [activeSection, setActiveSection] = useState('home');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile Menu State
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { name: 'Home', id: 'home' },
@@ -15,7 +15,7 @@ export default function Navbar() {
 
   const handleScroll = (id) => {
     setActiveSection(id);
-    setIsMobileMenuOpen(false); // Link click karne par mobile menu band ho jayega
+    setIsMobileMenuOpen(false);
     if (id === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
@@ -44,7 +44,6 @@ export default function Navbar() {
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
         </button>
 
-        {/* 💻 Desktop Nav */}
         <nav className="hidden md:flex items-center gap-2" onMouseLeave={() => setHoveredPath(null)}>
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
@@ -79,7 +78,6 @@ export default function Navbar() {
           </motion.a>
         </div>
 
-        {/* 📱 Mobile Hamburger Button */}
         <button 
           className="md:hidden text-white p-2 z-50"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -95,7 +93,6 @@ export default function Navbar() {
 
       </div>
 
-      {/* 📱 Mobile Menu Dropdown */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div

@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 export default function StackSection({ children, index, id }) {
   const containerRef = useRef(null);
 
-  // 🔥 FIX 1: useSpring hata diya. Ab ye mouse wheel ki raw speed use karega (Zero Lag)
   const { scrollYProgress: exitProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -23,12 +22,10 @@ export default function StackSection({ children, index, id }) {
   return (
     <div id={id} ref={containerRef} className="w-full relative h-auto md:h-[120vh]" style={{ zIndex: index }}>
       
-      {/* 📱 MOBILE VIEW: Native Scroll */}
       <div className="block md:hidden w-full relative bg-[#030014] overflow-hidden pt-10 pb-10">
         {children}
       </div>
 
-      {/* 💻 DESKTOP VIEW: Fast 3D Stacking */}
       <motion.div
         style={{ 
           scale: exitScale, 
@@ -44,7 +41,6 @@ export default function StackSection({ children, index, id }) {
             opacity: entryOpacity,
             willChange: "transform, opacity" 
           }}
-          // 🔥 FIX 2: overscroll-none hata diya taaki scroll qaid na ho aur naturally aage badhe!
           className="w-full h-full relative bg-[#030014] overflow-y-auto no-scrollbar"
         >
           {children}

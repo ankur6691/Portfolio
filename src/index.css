@@ -4,11 +4,9 @@
 
 @layer base {
   body {
-    /* cursor-none yahan se hata diya hai taaki normal mouse dikhe */
     @apply bg-[#030014] text-white overflow-x-hidden antialiased selection:bg-purple-500/30 selection:text-purple-200;
   }
   
-  /* Custom Premium Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -24,12 +22,10 @@
   }
 }
 
-/* Chrome, Safari aur Opera ke liye scrollbar hide karna */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Firefox, IE aur Edge ke liye scrollbar hide karna */
 .no-scrollbar {
   -ms-overflow-style: none;  
   scrollbar-width: none;  
