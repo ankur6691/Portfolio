@@ -1,20 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
- theme: {
-  extend: {
-    animation: {
-      'text-gradient': 'text-gradient 3s linear infinite',
+  theme: {
+    extend: {
+      colors: {
+        darkBg: "#06060c",
+        lightBg: "#f1f5f9",
+      },
     },
-    keyframes: {
-      'text-gradient': {
-        to: { backgroundPosition: '200% center' },
-      }
-    }
-  }
-},
+  },
   plugins: [],
 }
