@@ -95,7 +95,7 @@ function Preset1Cylinder() {
           y: { repeat: Infinity, duration: 3.5, ease: "easeInOut" },
         }}
         style={{ transformStyle: "preserve-3d", transform: "rotateX(-10deg)" }}
-        className="relative w-24 sm:w-28 md:w-34 h-32 sm:h-38 md:h-46 flex items-center justify-center"
+        className="relative w-24 sm:w-28 md:w-36 h-32 sm:h-40 md:h-48 flex items-center justify-center"
       >
         {PRESET_1_IMAGES.map((item, idx) => {
           const angle = (360 / total) * idx;
@@ -132,7 +132,7 @@ function Preset2CurvedArch() {
           y: { repeat: Infinity, duration: 3.5, ease: "easeInOut" },
         }}
         style={{ transformStyle: "preserve-3d", transform: "rotateX(12deg) rotateZ(3deg)" }}
-        className="relative w-24 sm:w-28 md:w-34 h-32 sm:h-38 md:h-46 flex items-center justify-center"
+        className="relative w-24 sm:w-28 md:w-36 h-32 sm:h-40 md:h-48 flex items-center justify-center"
       >
         {PRESET_2_IMAGES.map((item, idx) => {
           const angle = (360 / total) * idx;
@@ -169,7 +169,7 @@ function Preset3Helix() {
           y: { repeat: Infinity, duration: 3.2, ease: "easeInOut" },
         }}
         style={{ transformStyle: "preserve-3d", transform: "rotateX(15deg) rotateZ(-4deg)" }}
-        className="relative w-22 sm:w-26 md:w-32 h-26 sm:h-32 md:h-38 flex items-center justify-center"
+        className="relative w-24 sm:w-28 md:w-32 h-28 sm:h-32 md:h-36 flex items-center justify-center"
       >
         {PRESET_3_IMAGES.map((item, idx) => {
           const angle = (360 / total) * idx;
@@ -207,7 +207,7 @@ function Preset4PerspectiveOrbit() {
           y: { repeat: Infinity, duration: 3.5, ease: "easeInOut" },
         }}
         style={{ transformStyle: "preserve-3d", transform: "rotateX(-14deg) rotateZ(-6deg)" }}
-        className="relative w-24 sm:w-28 md:w-34 h-32 sm:h-38 md:h-46 flex items-center justify-center"
+        className="relative w-24 sm:w-28 md:w-36 h-32 sm:h-40 md:h-48 flex items-center justify-center"
       >
         {PRESET_4_IMAGES.map((item, idx) => {
           const angle = (360 / total) * idx;
