@@ -2,17 +2,15 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // =========================================================================
-// 1. ENHANCED CINEMATIC SOUND ENGINE (APPLE / SCI-FI UI CHORD SYNTHESIS)
+// 1. ENHANCED CINEMATIC SOUND ENGINE
 // =========================================================================
 const playFuturisticLaunchSound = () => {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // 1. Dual-Harmonic Whoosh Glide
     [220, 440, 880].forEach((freq, idx) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      
+
       osc.type = idx === 0 ? "triangle" : "sine";
       osc.frequency.setValueAtTime(freq, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(freq * 2.8, ctx.currentTime + 0.6);
@@ -35,10 +33,8 @@ const playFuturisticLaunchSound = () => {
 const playCrystalSuccessChime = () => {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // Warm Crystalline Major 9th Arpeggio (E6, G#6, B6, D#7, F#7)
     const notes = [1318.51, 1661.22, 1975.53, 2349.32, 2959.96];
-    
+
     notes.forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -60,12 +56,25 @@ const playCrystalSuccessChime = () => {
 };
 
 // =========================================================================
-// 2. SOCIAL CHANNELS
+// 2. SOCIAL & WHATSAPP CHANNELS
 // =========================================================================
+const WHATSAPP_NUM = import.meta.env.VITE_WHATSAPP_NUMBER || "918962944457";
+const WHATSAPP_PREFILL_TEXT = encodeURIComponent("Hey Ankur! I reviewed your portfolio and would like to discuss a project.");
+
 const SOCIAL_LINKS = [
   {
+    name: "WhatsApp Direct",
+    handle: "+91 8962944457",
+    url: `https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_PREFILL_TEXT}`,
+    icon: (
+      <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+      </svg>
+    ),
+  },
+  {
     name: "LinkedIn",
-    handle: "ankur-pandey",
+    handle: "ankur6691",
     url: "https://www.linkedin.com/in/ankur6691/",
     icon: (
       <svg className="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
@@ -75,7 +84,7 @@ const SOCIAL_LINKS = [
   },
   {
     name: "GitHub",
-    handle: "ankurpandey-dev",
+    handle: "ankur6691",
     url: "https://github.com/ankur6691",
     icon: (
       <svg className="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
@@ -85,7 +94,7 @@ const SOCIAL_LINKS = [
   },
   {
     name: "Direct Mail",
-    handle: "ankur@example.com",
+    handle: "ankurpandey6691@gmail.com",
     url: "mailto:ankurpandey6691@gmail.com",
     icon: (
       <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,8 +110,6 @@ const SOCIAL_LINKS = [
 function Quantum3DMailVault({ isAbsorbing, hasDelivered, triggerShockwave }) {
   return (
     <div className="relative w-full flex-1 flex flex-col items-center justify-center select-none min-h-[140px]" style={{ perspective: "900px" }}>
-      
-      {/* Shockwave Rings on Impact */}
       {triggerShockwave && (
         <>
           <motion.div
@@ -120,7 +127,6 @@ function Quantum3DMailVault({ isAbsorbing, hasDelivered, triggerShockwave }) {
         </>
       )}
 
-      {/* 3D Floating Crystal Core */}
       <motion.div
         animate={{
           rotateY: [0, 360],
@@ -156,7 +162,7 @@ function Quantum3DMailVault({ isAbsorbing, hasDelivered, triggerShockwave }) {
                 <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-[8px] font-mono font-black mt-0.5 text-emerald-300">CONFIRMED</span>
+                <span className="text-[8px] font-mono font-black mt-0.5 text-emerald-300">DELIVERED</span>
               </motion.div>
             ) : (
               <svg className="w-6 h-6 text-cyan-200 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,14 +174,14 @@ function Quantum3DMailVault({ isAbsorbing, hasDelivered, triggerShockwave }) {
       </motion.div>
 
       <span className="mt-2 text-[9px] font-mono text-cyan-400/80 tracking-widest uppercase">
-        {isAbsorbing ? "✦ ABSORBING QUANTUM SHARD..." : "3D SPATIAL MAIL VAULT"}
+        {isAbsorbing ? "✦ TRANSMITTING REAL SHARD..." : "3D SPATIAL MAIL VAULT"}
       </span>
     </div>
   );
 }
 
 // =========================================================================
-// 4. MAIN SYMMETRIC CONTACT COMPONENT
+// 4. MAIN CONTACT COMPONENT WITH REAL NODEMAILER INTEGRATION
 // =========================================================================
 export default function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -183,6 +189,7 @@ export default function ContactSection() {
   const [isAbsorbing, setIsAbsorbing] = useState(false);
   const [triggerShockwave, setTriggerShockwave] = useState(false);
   const [hasDelivered, setHasDelivered] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -192,16 +199,33 @@ export default function ContactSection() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleGenieSubmit = (e) => {
+  const handleGenieSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    if (!formData.name || !formData.email || !formData.message || isSending) return;
 
+    setIsSending(true);
     playFuturisticLaunchSound();
     setFlyingPayload({ ...formData });
+
+    // Send payload to backend serverless API
+    const sendMailPromise = fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
     setTimeout(() => {
       setIsAbsorbing(true);
     }, 1050);
+
+    try {
+      const response = await sendMailPromise;
+      if (!response.ok) {
+        console.warn("Server responded with error status:", response.status);
+      }
+    } catch (err) {
+      console.error("Transmission network error:", err);
+    }
 
     setTimeout(() => {
       playCrystalSuccessChime();
@@ -209,6 +233,7 @@ export default function ContactSection() {
       setFlyingPayload(null);
       setIsAbsorbing(false);
       setHasDelivered(true);
+      setIsSending(false);
       setFormData({ name: "", email: "", message: "" });
 
       setTimeout(() => {
@@ -223,8 +248,6 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="w-full pt-8 pb-16 px-4 sm:px-6 md:px-10 max-w-6xl mx-auto select-none relative z-10">
-      
-      {/* Ambient Lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-tr from-purple-600/15 via-cyan-500/15 to-pink-500/15 blur-[100px] pointer-events-none -z-10" />
 
       {/* Header */}
@@ -237,10 +260,10 @@ export default function ContactSection() {
         </h2>
       </div>
 
-      {/* Equal Sized & Balanced Cockpit Grid */}
+      {/* Balanced Cockpit Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch max-w-5xl mx-auto relative">
         
-        {/* Left Column: Equal Height Vault & Channels */}
+        {/* Left Column: 3D Vault & Channels */}
         <div className="lg:col-span-5 h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-white/85 dark:bg-[#080a14]/95 border border-slate-300/80 dark:border-white/15 backdrop-blur-3xl shadow-xl relative overflow-hidden">
           <Quantum3DMailVault
             isAbsorbing={isAbsorbing}
@@ -278,7 +301,7 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* Right Column: Equal Height Clean Form & Flight Path */}
+        {/* Right Column: Equal Height Form */}
         <div className="lg:col-span-7 h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-white/85 dark:bg-[#080a14]/95 border border-slate-300/80 dark:border-white/15 backdrop-blur-3xl shadow-xl relative overflow-visible">
           
           {/* Holographic Shard Flight Trajectory */}
@@ -361,12 +384,12 @@ export default function ContactSection() {
 
             <motion.button
               type="submit"
-              disabled={isAbsorbing || !!flyingPayload}
+              disabled={isAbsorbing || !!flyingPayload || isSending}
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.985 }}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 text-black dark:text-white font-mono font-black text-xs uppercase tracking-widest shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 text-black dark:text-white font-mono font-black text-xs uppercase tracking-widest shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 transition-all flex items-center justify-center gap-2 cursor-pointer mt-1 disabled:opacity-50"
             >
-              <span>✦ CAST MESSAGE INTO MAGIC VAULT ✦</span>
+              <span>{isSending ? "✦ TRANSMITTING..." : "✦ CAST MESSAGE INTO MAGIC VAULT ✦"}</span>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
