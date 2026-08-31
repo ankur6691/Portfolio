@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // =========================================================================
-// 1. PROJECTS DATABASE
+// 1. PROJECTS DATABASE (ALL EQUALIZED TO 5 CARDS FOR PERFECT 3D CYLINDER)
 // =========================================================================
 const PROJECTS = [
   // 01. MADHYA BHARAT ASSOCIATES (LIVE PRODUCTION)
@@ -26,11 +26,11 @@ const PROJECTS = [
     githubUrl: null,
     videoUrl: null,
     slides: [
-      { title: "Hero Portal", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167863/Disclaimer_ktchkm.png" },
-      { title: "About & Stats", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167864/Front_Page_hemykz.png" },
-      { title: "Expertise Matrix", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167863/Expertise_frpwhy.png" },
-      { title: "Legal Council", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167864/Legal_Team_eoh9wq.png" },
-      { title: "Consultation Form", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167863/contact_page_kz3stt.png" },
+      { title: "Hero Portal", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167863/Disclaimer_ktchkm.png" },
+      { title: "About & Stats", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167864/Front_Page_hemykz.png" },
+      { title: "Expertise Matrix", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167863/Expertise_frpwhy.png" },
+      { title: "Legal Council", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167864/Legal_Team_eoh9wq.png" },
+      { title: "Consultation Form", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167863/contact_page_kz3stt.png" },
     ],
   },
 
@@ -52,14 +52,14 @@ const PROJECTS = [
       { label: "Scope", value: "Global Schools" },
     ],
     liveUrl: null,
-    githubUrl: "https://github.com/",
+    githubUrl: "https://github.com/ankur6691/Next_Claritus",
     videoUrl: null,
     slides: [
-      { title: "Super-Admin Hub", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" },
-      { title: "Principal Console", img: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80" },
-      { title: "Teacher Workspace", img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" },
-      { title: "Student 10-12 Portal", img: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&q=80" },
-      { title: "Relational Schemas", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80" },
+      { title: "Super-Admin Hub", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80" },
+      { title: "Principal Console", img: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80" },
+      { title: "Teacher Workspace", img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80" },
+      { title: "Student 10-12 Portal", img: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80" },
+      { title: "Relational Schemas", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80" },
     ],
   },
 
@@ -81,18 +81,18 @@ const PROJECTS = [
       { label: "Operations", value: "KOT & Inventory" },
     ],
     liveUrl: null,
-    githubUrl: "https://github.com/",
+    githubUrl: "https://github.com/ankur6691",
     videoUrl: null,
     slides: [
-      { title: "POS Touch Terminal", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" },
-      { title: "Live KOT Dispatch", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" },
-      { title: "Table Matrix", img: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=600&q=80" },
-      { title: "Fast Billing", img: "https://images.unsplash.com/photo-1556742049-0a67e557224f?w=600&q=80" },
-      { title: "Inventory Engine", img: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&q=80" },
+      { title: "POS Touch Terminal", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80" },
+      { title: "Live KOT Dispatch", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" },
+      { title: "Table Matrix", img: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=800&q=80" },
+      { title: "Fast Billing", img: "https://images.unsplash.com/photo-1556742049-0a67e557224f?w=800&q=80" },
+      { title: "Inventory Engine", img: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=800&q=80" },
     ],
   },
 
-  // 04. CHATIFY (CLIENT MESSENGER WITH VIDEO)
+  // 04. CHATIFY (CLIENT MESSENGER WITH VIDEO - 5 CARDS)
   {
     id: "chatify",
     step: "04",
@@ -110,17 +110,18 @@ const PROJECTS = [
       { label: "Latency", value: "Realtime Sync" },
     ],
     liveUrl: null,
-    githubUrl: "https://github.com/",
+    githubUrl: "https://github.com/Tech-Collaboration-Team/chatify",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     slides: [
-      { title: "Live Chat Feed", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" },
-      { title: "WebSocket Mesh", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=600&q=80" },
-      { title: "Typing Telemetry", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80" },
-      { title: "Auth Pipeline", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80" },
+      { title: "Live Chat Feed", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" },
+      { title: "WebSocket Mesh", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&q=80" },
+      { title: "Typing Telemetry", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80" },
+      { title: "Auth Pipeline", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80" },
+      { title: "Persistent Storage", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80" },
     ],
   },
 
-  // 05. SAFEHER (OPEN SOURCE SOS)
+  // 05. SAFEHER (OPEN SOURCE SOS - 5 CARDS)
   {
     id: "safeher",
     step: "05",
@@ -138,19 +139,20 @@ const PROJECTS = [
       { label: "Platform", value: "Mobile Geofence" },
     ],
     liveUrl: null,
-    githubUrl: "https://github.com/",
+    githubUrl: "https://github.com/Tech-Collaboration-Team/women-safety-ai-system",
     videoUrl: null,
     slides: [
-      { title: "1-Tap SOS Trigger", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" },
-      { title: "Live GPS Mesh", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&q=80" },
-      { title: "Webhook Dispatch", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" },
-      { title: "Emergency Hub", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80" },
+      { title: "1-Tap SOS Trigger", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80" },
+      { title: "Live GPS Mesh", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80" },
+      { title: "Webhook Dispatch", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80" },
+      { title: "Emergency Hub", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80" },
+      { title: "Geofence Siren", img: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&q=80" },
     ],
   },
 ];
 
 // =========================================================================
-// 2. BORDERLESS 3D DRAGGABLE CYLINDRICAL CAROUSEL
+// 2. PERFECTED 5-CARD 3D PANORAMIC CYLINDER
 // =========================================================================
 function Interactive3DCylinder({ slides, onCardClick }) {
   const [rotation, setRotation] = useState(0);
@@ -160,11 +162,10 @@ function Interactive3DCylinder({ slides, onCardClick }) {
   const animRef = useRef(null);
 
   const total = slides.length;
-  const CARD_WIDTH = "w-28 sm:w-32 md:w-36";
-  const CARD_HEIGHT = "h-36 sm:h-44 md:h-52";
-  const ORBIT_RADIUS = 135;
+  const CARD_WIDTH = "w-44 sm:w-52 md:w-56 lg:w-60";
+  const CARD_HEIGHT = "h-28 sm:h-32 md:h-36 lg:h-38";
+  const ORBIT_RADIUS = 190; // Balanced radius so both side-wings remain fully visible
 
-  // Ultra-smooth slow cinematic rotation
   useEffect(() => {
     let prevTime = performance.now();
     const spinLoop = (time) => {
@@ -205,8 +206,8 @@ function Interactive3DCylinder({ slides, onCardClick }) {
       onTouchStart={handlePointerDown}
       onTouchMove={handlePointerMove}
       onTouchEnd={handlePointerUp}
-      className="relative w-full h-80 sm:h-96 md:h-[430px] lg:h-[450px] flex items-center justify-center overflow-visible select-none touch-none cursor-grab active:cursor-grabbing p-2"
-      style={{ perspective: "1200px" }}
+      className="relative w-full h-72 sm:h-80 md:h-[390px] flex items-center justify-center overflow-visible select-none touch-none cursor-grab active:cursor-grabbing"
+      style={{ perspective: "1100px" }}
     >
       <div
         style={{
@@ -228,13 +229,29 @@ function Interactive3DCylinder({ slides, onCardClick }) {
                 transform: `rotateY(${angle}deg) translateZ(${ORBIT_RADIUS}px)`,
                 backfaceVisibility: "hidden",
               }}
-              className="absolute inset-0 rounded-2xl overflow-hidden border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] bg-slate-900 group cursor-pointer hover:border-cyan-400 hover:scale-105 transition-all"
+              className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 shadow-[0_12px_30px_rgba(0,0,0,0.85)] bg-slate-950 group cursor-pointer hover:border-cyan-400 hover:scale-105 transition-all flex flex-col"
             >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover pointer-events-none"
-              />
+              {/* Mini Browser Top Bar */}
+              <div className="h-4 sm:h-5 bg-slate-900/95 border-b border-white/10 px-2 flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-400/80" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400/80" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+                </div>
+                <span className="text-[7.5px] font-mono text-slate-400 truncate max-w-[110px]">
+                  {item.title}
+                </span>
+                <span className="text-[8px] text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+              </div>
+
+              {/* Uncut Screenshot Display */}
+              <div className="flex-1 w-full relative overflow-hidden bg-slate-900">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-full object-cover object-top pointer-events-none group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
             </div>
           );
         })}
@@ -244,7 +261,7 @@ function Interactive3DCylinder({ slides, onCardClick }) {
 }
 
 // =========================================================================
-// 3. MAIN PROJECTS SECTION COMPONENT
+// 3. MAIN PROJECTS SECTION COMPONENT (5:7 BALANCED GRID)
 // =========================================================================
 export default function ProjectsSection() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -262,7 +279,6 @@ export default function ProjectsSection() {
     setActiveIdx((prev) => prev + newDirection);
   };
 
-  // Safe Non-Passive Wheel Interceptor (Runs on laptop & desktop)
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -279,7 +295,6 @@ export default function ProjectsSection() {
         wheelBuffer = 0;
       }, 150);
 
-      // Downward Wheel
       if (wheelBuffer > 35) {
         if (activeIdx < PROJECTS.length - 1) {
           e.preventDefault();
@@ -294,9 +309,7 @@ export default function ProjectsSection() {
             }, 600);
           }
         }
-      }
-      // Upward Wheel
-      else if (wheelBuffer < -35) {
+      } else if (wheelBuffer < -35) {
         if (activeIdx > 0) {
           e.preventDefault();
           e.stopPropagation();
@@ -320,7 +333,6 @@ export default function ProjectsSection() {
     };
   }, [activeIdx]);
 
-  // Mobile Horizontal Touch Swipe
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -340,7 +352,6 @@ export default function ProjectsSection() {
     }
   };
 
-  // Subtle Motion Variants
   const cardVariants = {
     enter: (dir) => ({
       y: dir > 0 ? 30 : -30,
@@ -401,7 +412,7 @@ export default function ProjectsSection() {
           style={{ background: currentProject.glowColor }}
         />
 
-        {/* Morphing Project Card */}
+        {/* Morphing Project Card (5 : 7 Balanced Cockpit Split) */}
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={currentProject.id}
@@ -412,12 +423,12 @@ export default function ProjectsSection() {
             exit="exit"
             className="w-full p-6 sm:p-8 lg:p-10 rounded-3xl bg-white/85 dark:bg-[#080a14]/95 border border-slate-300/80 dark:border-white/15 backdrop-blur-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
               
-              {/* Left Column: Details & Actions */}
-              <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
+              {/* Left Column: Compact 5-Span Details & Actions */}
+              <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
                 <div>
-                  <div className="flex items-center gap-2 mb-2.5">
+                  <div className="flex items-center gap-2 mb-2">
                     <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase border ${currentProject.badgeColor}`}>
                       {currentProject.badge}
                     </span>
@@ -426,10 +437,10 @@ export default function ProjectsSection() {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight uppercase">
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase">
                     {currentProject.title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-mono text-cyan-600 dark:text-cyan-400 mt-1 mb-3">
+                  <p className="text-xs sm:text-sm font-mono text-cyan-600 dark:text-cyan-400 mt-1 mb-2.5">
                     {currentProject.tagline}
                   </p>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
@@ -437,27 +448,27 @@ export default function ProjectsSection() {
                   </p>
 
                   {/* Engineering Metrics Strip */}
-                  <div className="grid grid-cols-3 gap-2 my-5 pt-4 border-t border-slate-200 dark:border-white/10">
+                  <div className="grid grid-cols-3 gap-2 my-4 pt-3.5 border-t border-slate-200 dark:border-white/10">
                     {currentProject.metrics.map((m) => (
-                      <div key={m.label} className="p-2 sm:p-2.5 rounded-xl bg-slate-100/90 dark:bg-white/[0.04] border border-slate-300/60 dark:border-white/10 text-left">
-                        <p className="text-[8.5px] font-mono text-slate-500 dark:text-slate-400 uppercase">{m.label}</p>
-                        <p className="text-xs font-bold text-slate-900 dark:text-white mt-0.5 truncate">{m.value}</p>
+                      <div key={m.label} className="p-2 rounded-xl bg-slate-100/90 dark:bg-white/[0.04] border border-slate-300/60 dark:border-white/10 text-left">
+                        <p className="text-[8px] font-mono text-slate-500 dark:text-slate-400 uppercase">{m.label}</p>
+                        <p className="text-[11px] font-bold text-slate-900 dark:text-white mt-0.5 truncate">{m.value}</p>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
                   {currentProject.liveUrl && (
                     <a
                       href={currentProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-mono font-bold text-xs shadow-lg shadow-amber-900/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-mono font-bold text-xs shadow-lg shadow-amber-900/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
                       <span>VISIT LIVE PORTAL</span>
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -472,7 +483,7 @@ export default function ProjectsSection() {
                           title: currentProject.title,
                         })
                       }
-                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-mono font-bold text-xs border border-pink-500/30 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-mono font-bold text-xs border border-pink-500/30 transition-all cursor-pointer"
                     >
                       <span>WATCH DEMO ▶</span>
                     </button>
@@ -483,7 +494,7 @@ export default function ProjectsSection() {
                       href={currentProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2.5 rounded-xl bg-slate-200/80 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white font-mono font-semibold text-xs border border-slate-300 dark:border-white/15 transition-all"
+                      className="px-3.5 py-2 rounded-xl bg-slate-200/80 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white font-mono font-semibold text-xs border border-slate-300 dark:border-white/15 transition-all"
                     >
                       Source Code ↗
                     </a>
@@ -491,8 +502,8 @@ export default function ProjectsSection() {
                 </div>
               </div>
 
-              {/* Right Column: Borderless 3D Floating Carousel */}
-              <div className="lg:col-span-6 flex flex-col items-center justify-center">
+              {/* Right Column: Spacious 7-Span 3D Cylinder with Visible Side Cards */}
+              <div className="lg:col-span-7 flex flex-col items-center justify-center overflow-visible">
                 <Interactive3DCylinder
                   slides={currentProject.slides}
                   onCardClick={(item) =>
@@ -510,7 +521,7 @@ export default function ProjectsSection() {
         </AnimatePresence>
       </div>
 
-      {/* Unified Stepper Indicators */}
+      {/* Stepper Indicators */}
       <div className="mt-6 flex items-center justify-center gap-2">
         {PROJECTS.map((_, i) => (
           <button
@@ -528,7 +539,7 @@ export default function ProjectsSection() {
         ))}
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Fullscreen Lightbox Modal */}
       <AnimatePresence>
         {modalMedia && (
           <motion.div
@@ -543,7 +554,7 @@ export default function ProjectsSection() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full max-h-[85vh] rounded-3xl overflow-hidden bg-slate-900 border border-white/20 shadow-2xl flex flex-col cursor-default"
+              className="relative max-w-5xl w-full max-h-[85vh] rounded-3xl overflow-hidden bg-slate-900 border border-white/20 shadow-2xl flex flex-col cursor-default"
             >
               <div className="p-3.5 bg-slate-950 border-b border-white/10 flex items-center justify-between">
                 <span className="text-xs font-mono text-cyan-400 font-bold uppercase truncate pr-4">
@@ -551,15 +562,15 @@ export default function ProjectsSection() {
                 </span>
                 <button
                   onClick={() => setModalMedia(null)}
-                  className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors text-xs font-mono cursor-pointer"
+                  className="p-1 px-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors text-xs font-mono cursor-pointer"
                 >
                   ✕ Close
                 </button>
               </div>
 
-              <div className="flex-1 overflow-auto flex items-center justify-center bg-black/50 p-2">
+              <div className="flex-1 overflow-auto flex items-center justify-center bg-black/60 p-4">
                 {modalMedia.type === "image" ? (
-                  <img src={modalMedia.url} alt="Fullscreen View" className="max-w-full max-h-[70vh] object-contain rounded-xl" />
+                  <img src={modalMedia.url} alt="Fullscreen View" className="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl" />
                 ) : (
                   <div className="w-full aspect-video">
                     <iframe
