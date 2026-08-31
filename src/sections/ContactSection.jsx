@@ -56,7 +56,7 @@ const playCrystalSuccessChime = () => {
 };
 
 // =========================================================================
-// 2. SOCIAL & WHATSAPP CHANNELS (MAIL REMOVED)
+// 2. SOCIAL & WHATSAPP CHANNELS
 // =========================================================================
 const WHATSAPP_NUM = import.meta.env.VITE_WHATSAPP_NUMBER || "918962944457";
 const WHATSAPP_PREFILL_TEXT = encodeURIComponent("Hey Ankur! I reviewed your portfolio and would like to discuss a project.");
@@ -197,7 +197,6 @@ export default function ContactSection() {
     playFuturisticLaunchSound();
     setFlyingPayload({ ...formData });
 
-    // Send payload to backend serverless API
     const sendMailPromise = fetch("/api/send-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -240,7 +239,7 @@ export default function ContactSection() {
     <section id="contact" className="w-full pt-8 pb-16 px-4 sm:px-6 md:px-10 max-w-6xl mx-auto select-none relative z-10">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-tr from-purple-600/15 via-cyan-500/15 to-pink-500/15 blur-[100px] pointer-events-none -z-10" />
 
-      {/* Header */}
+      {/* Header with Welcoming Subtext */}
       <div className="text-center mb-6 sm:mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] font-mono uppercase tracking-widest mb-1.5">
           // 05. TRANSMISSION GATEWAY
@@ -248,6 +247,11 @@ export default function ContactSection() {
         <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight uppercase leading-none">
           GET IN <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 bg-clip-text text-transparent">TOUCH</span>
         </h2>
+        
+        {/* Help, Web Design & Freelance Collaboration Note */}
+        <p className="mt-3 max-w-lg mx-auto text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed px-4">
+          Need assistance with website development, UI/UX design, or have a freelance project in mind? Feel free to drop a message or reach out directly on WhatsApp.
+        </p>
       </div>
 
       {/* Balanced Cockpit Grid */}

@@ -26,11 +26,11 @@ const PROJECTS = [
     githubUrl: null,
     videoUrl: null,
     slides: [
-      { title: "Hero Portal", img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80" },
-      { title: "About & Stats", img: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=600&q=80" },
-      { title: "Expertise Matrix", img: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=600&q=80" },
-      { title: "Legal Council", img: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80" },
-      { title: "Consultation Form", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" },
+      { title: "Hero Portal", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167863/Disclaimer_ktchkm.png" },
+      { title: "About & Stats", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167864/Front_Page_hemykz.png" },
+      { title: "Expertise Matrix", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167863/Expertise_frpwhy.png" },
+      { title: "Legal Council", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167864/Legal_Team_eoh9wq.png" },
+      { title: "Consultation Form", img: "https://res.cloudinary.com/dsofipudf/image/upload/v1788167863/contact_page_kz3stt.png" },
     ],
   },
 
