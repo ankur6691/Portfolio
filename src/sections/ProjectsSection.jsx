@@ -5,7 +5,7 @@ import AdminModal from "../components/AdminModal";
 import { FALLBACK_PROJECTS } from "../data/fallbackProjects";
 
 // =========================================================================
-// 1. 3D CYLINDER CAROUSEL COMPONENT
+// 1. DYNAMIC SMART-FIT 3D CYLINDER CAROUSEL
 // =========================================================================
 function Interactive3DCylinder({ slides = [], onCardClick }) {
   const [rotation, setRotation] = useState(0);
@@ -15,9 +15,10 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
   const animRef = useRef(null);
 
   const total = slides.length || 1;
-  const CARD_WIDTH = "w-44 sm:w-52 md:w-56 lg:w-60";
-  const CARD_HEIGHT = "h-28 sm:h-32 md:h-36 lg:h-38";
-  const ORBIT_RADIUS = Math.max(170, Math.round(total * 38));
+  // Adaptive Card Sizes for better aspect-ratio handling
+  const CARD_WIDTH = "w-48 sm:w-56 md:w-60 lg:w-64";
+  const CARD_HEIGHT = "h-32 sm:h-36 md:h-40 lg:h-44";
+  const ORBIT_RADIUS = Math.max(180, Math.round(total * 42));
 
   // 60 FPS Continuous Spin Loop
   useEffect(() => {
@@ -57,8 +58,8 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
       onTouchStart={handlePointerDown}
       onTouchMove={handlePointerMove}
       onTouchEnd={handlePointerUp}
-      className="relative w-full h-72 sm:h-80 md:h-[390px] flex items-center justify-center overflow-visible select-none touch-none cursor-grab active:cursor-grabbing"
-      style={{ perspective: "1100px" }}
+      className="relative w-full h-80 sm:h-96 md:h-[420px] flex items-center justify-center overflow-visible select-none touch-none cursor-grab active:cursor-grabbing"
+      style={{ perspective: "1200px" }}
     >
       <div
         style={{
@@ -80,28 +81,37 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
                 transform: `rotateY(${angle}deg) translateZ(${ORBIT_RADIUS}px)`,
                 backfaceVisibility: "hidden",
               }}
-              className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 shadow-[0_12px_30px_rgba(0,0,0,0.85)] bg-slate-950 group cursor-pointer hover:border-cyan-400 hover:scale-105 transition-all flex flex-col"
+              className="absolute inset-0 rounded-2xl overflow-hidden border border-white/20 shadow-[0_15px_35px_rgba(0,0,0,0.85)] bg-slate-950 group cursor-pointer hover:border-cyan-400 hover:scale-105 transition-all flex flex-col"
             >
               {/* Mini Browser Bar */}
-              <div className="h-4 sm:h-5 bg-slate-900/95 border-b border-white/10 px-2 flex items-center justify-between">
+              <div className="h-5 sm:h-6 bg-slate-900/95 border-b border-white/10 px-2.5 flex items-center justify-between z-20 shrink-0">
                 <div className="flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-400/80" />
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400/80" />
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
                 </div>
-                <span className="text-[7.5px] font-mono text-slate-400 truncate max-w-[110px]">
+                <span className="text-[8px] font-mono text-slate-400 truncate max-w-[120px]">
                   {item.title}
                 </span>
-                <span className="text-[8px] text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                <span className="text-[9px] text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
               </div>
 
-              {/* Viewport Screenshot */}
-              <div className="flex-1 w-full relative overflow-hidden bg-slate-900">
+              {/* Dynamic Viewport: Blurred Ambient Backdrop + Full Contain (Zero Cropping) */}
+              <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center p-1">
+                {/* Ambient Blurred Background for Vertical/Square aspect ratios */}
+                <img
+                  src={item.img}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover blur-lg opacity-35 scale-125 pointer-events-none"
+                />
+                
+                {/* Crisp Full-Fit Screenshot */}
                 <img
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
-                  className="w-full h-full object-cover object-top pointer-events-none group-hover:scale-105 transition-transform duration-500"
+                  className="relative z-10 max-w-full max-h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                 />
               </div>
             </div>
@@ -113,7 +123,7 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
 }
 
 // =========================================================================
-// 2. MAIN PROJECTS SECTION (STRICT SECRET CODE TRIGGER)
+// 2. MAIN PROJECTS SECTION (ORDERING & MERGE ENGINE)
 // =========================================================================
 export default function ProjectsSection() {
   const [projectsList, setProjectsList] = useState(FALLBACK_PROJECTS);
@@ -127,17 +137,49 @@ export default function ProjectsSection() {
   const touchStartX = useRef(0);
   const keystrokeBuffer = useRef("");
 
-  const totalProjects = projectsList.length;
-  const currentProject = projectsList[activeIdx] || projectsList[0];
+  // Desired Custom Order Priorities
+  const getProjectWeight = (title = "") => {
+    const t = title.toLowerCase();
+    if (t.includes("madhya bharat") || t.includes("legal")) return 1;
+    if (t.includes("claritas") || t.includes("school")) return 2;
+    if (t.includes("crypto") || t.includes("exchange")) return 3;
+    if (t.includes("ai") || t.includes("pipeline")) return 4;
+    return 10;
+  };
 
-  // Live Database Fetching
+  // Smart Live DB + Fallback Merger
   const fetchLiveProjects = useCallback(async () => {
     try {
       const res = await fetch("/api/projects");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        setProjectsList(data);
+      const dbProjects = await res.json();
+
+      if (Array.isArray(dbProjects)) {
+        // Map database projects by normalized title
+        const dbMap = new Map();
+        dbProjects.forEach((p) => {
+          if (p.title) dbMap.set(p.title.trim().toLowerCase(), p);
+        });
+
+        // Merge: Overwrite fallback if DB has updated copy, keep others intact
+        const mergedList = FALLBACK_PROJECTS.map((fallback) => {
+          const key = fallback.title.trim().toLowerCase();
+          if (dbMap.has(key)) {
+            const dbItem = dbMap.get(key);
+            dbMap.delete(key);
+            return dbItem;
+          }
+          return fallback;
+        });
+
+        // Append any brand new projects created via CMS
+        const brandNewDbProjects = Array.from(dbMap.values());
+        const combined = [...mergedList, ...brandNewDbProjects];
+
+        // Sort by designated order
+        combined.sort((a, b) => getProjectWeight(a.title) - getProjectWeight(b.title));
+
+        setProjectsList(combined);
       }
     } catch {
       setProjectsList(FALLBACK_PROJECTS);
@@ -148,22 +190,18 @@ export default function ProjectsSection() {
     fetchLiveProjects();
   }, [fetchLiveProjects]);
 
-  // ONLY TRIGGER: Secret Passcode "Svvv@2017ankur"
+  // Secret Passcode: "Svvv@2017ankur"
   useEffect(() => {
     const SECRET_KEY = "svvv@2017ankur";
 
     const handleGlobalKeyDown = (e) => {
-      // Ignore typing if user is focused on any form input/textarea
       if (["INPUT", "TEXTAREA"].includes(e.target?.tagName)) return;
 
-      // Only append actual single characters (ignores Shift, Alt, Control keys)
       if (e.key.length === 1) {
         keystrokeBuffer.current += e.key.toLowerCase();
-
         if (keystrokeBuffer.current.length > 30) {
           keystrokeBuffer.current = keystrokeBuffer.current.slice(-30);
         }
-
         if (keystrokeBuffer.current.includes(SECRET_KEY)) {
           keystrokeBuffer.current = "";
           setIsAdminOpen(true);
@@ -174,6 +212,9 @@ export default function ProjectsSection() {
     window.addEventListener("keydown", handleGlobalKeyDown);
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, []);
+
+  const totalProjects = projectsList.length;
+  const currentProject = projectsList[activeIdx] || projectsList[0] || {};
 
   const paginate = useCallback(
     (newDirection) => {
@@ -265,7 +306,7 @@ export default function ProjectsSection() {
 
   return (
     <section id="projects" className="w-full pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto select-none relative z-10">
-      {/* Clean Header (Zero Clues for Visitors) */}
+      {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest mb-2">
           // 04. PROVEN WORK & SHIPMENTS
@@ -280,7 +321,7 @@ export default function ProjectsSection() {
         ref={containerRef}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="relative w-full max-w-6xl mx-auto flex items-center justify-center min-h-[480px] sm:min-h-[520px]"
+        className="relative w-full max-w-6xl mx-auto flex items-center justify-center min-h-[500px] sm:min-h-[540px]"
       >
         {/* Glow */}
         <div
