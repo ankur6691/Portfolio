@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import AdminModal from "../components/AdminModal";
 
 // =========================================================================
-// 1. PROJECTS DATABASE (ALL EQUALIZED TO 5 CARDS FOR PERFECT 3D CYLINDER)
+// 1. FALLBACK PROJECTS DATABASE (Active if DB is loading or empty)
 // =========================================================================
-const PROJECTS = [
+const FALLBACK_PROJECTS = [
   // 01. MADHYA BHARAT ASSOCIATES (LIVE PRODUCTION)
   {
     id: "madhya-bharat",
@@ -92,7 +93,7 @@ const PROJECTS = [
     ],
   },
 
-  // 04. CHATIFY (CLIENT MESSENGER WITH VIDEO - 5 CARDS)
+  // 04. CHATIFY (CLIENT MESSENGER WITH VIDEO)
   {
     id: "chatify",
     step: "04",
@@ -121,7 +122,7 @@ const PROJECTS = [
     ],
   },
 
-  // 05. SAFEHER (OPEN SOURCE SOS - 5 CARDS)
+  // 05. SAFEHER (OPEN SOURCE SOS)
   {
     id: "safeher",
     step: "05",
@@ -152,19 +153,19 @@ const PROJECTS = [
 ];
 
 // =========================================================================
-// 2. PERFECTED 5-CARD 3D PANORAMIC CYLINDER
+// 2. PERFECTED 3D PANORAMIC CYLINDER
 // =========================================================================
-function Interactive3DCylinder({ slides, onCardClick }) {
+function Interactive3DCylinder({ slides = [], onCardClick }) {
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startX = useRef(0);
   const lastRotation = useRef(0);
   const animRef = useRef(null);
 
-  const total = slides.length;
+  const total = slides.length || 1;
   const CARD_WIDTH = "w-44 sm:w-52 md:w-56 lg:w-60";
   const CARD_HEIGHT = "h-28 sm:h-32 md:h-36 lg:h-38";
-  const ORBIT_RADIUS = 190; // Balanced radius so both side-wings remain fully visible
+  const ORBIT_RADIUS = 190;
 
   useEffect(() => {
     let prevTime = performance.now();
@@ -231,7 +232,7 @@ function Interactive3DCylinder({ slides, onCardClick }) {
               }}
               className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 shadow-[0_12px_30px_rgba(0,0,0,0.85)] bg-slate-950 group cursor-pointer hover:border-cyan-400 hover:scale-105 transition-all flex flex-col"
             >
-              {/* Mini Browser Top Bar */}
+              {/* Mini Browser Header */}
               <div className="h-4 sm:h-5 bg-slate-900/95 border-b border-white/10 px-2 flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-400/80" />
@@ -244,7 +245,7 @@ function Interactive3DCylinder({ slides, onCardClick }) {
                 <span className="text-[8px] text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
               </div>
 
-              {/* Uncut Screenshot Display */}
+              {/* Screenshot Viewport */}
               <div className="flex-1 w-full relative overflow-hidden bg-slate-900">
                 <img
                   src={item.img}
@@ -261,24 +262,57 @@ function Interactive3DCylinder({ slides, onCardClick }) {
 }
 
 // =========================================================================
-// 3. MAIN PROJECTS SECTION COMPONENT (5:7 BALANCED GRID)
+// 3. MAIN PROJECTS SECTION (DYNAMIC DATABASE CONNECTED)
 // =========================================================================
 export default function ProjectsSection() {
+  const [projectsList, setProjectsList] = useState(FALLBACK_PROJECTS);
   const [activeIdx, setActiveIdx] = useState(0);
   const [direction, setDirection] = useState(1);
   const [modalMedia, setModalMedia] = useState(null);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   const containerRef = useRef(null);
   const isThrottled = useRef(false);
   const touchStartX = useRef(0);
 
-  const currentProject = PROJECTS[activeIdx];
+  // MongoDB se Live Projects Mangwana
+  const fetchLiveProjects = async () => {
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        setProjectsList(data);
+      }
+    } catch (e) {
+      console.log("Using fallback projects");
+    }
+  };
+
+  useEffect(() => {
+    fetchLiveProjects();
+  }, []);
+
+  // Secret Keyboard Shortcut: Ctrl + Shift + A
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+        e.preventDefault();
+        setIsAdminOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const totalProjects = projectsList.length;
+  const currentProject = projectsList[activeIdx] || projectsList[0];
 
   const paginate = (newDirection) => {
     setDirection(newDirection);
     setActiveIdx((prev) => prev + newDirection);
   };
 
+  // Wheel Interceptor
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -296,7 +330,7 @@ export default function ProjectsSection() {
       }, 150);
 
       if (wheelBuffer > 35) {
-        if (activeIdx < PROJECTS.length - 1) {
+        if (activeIdx < totalProjects - 1) {
           e.preventDefault();
           e.stopPropagation();
 
@@ -331,7 +365,7 @@ export default function ProjectsSection() {
       el.removeEventListener("wheel", handleWheelEvent);
       clearTimeout(timer);
     };
-  }, [activeIdx]);
+  }, [activeIdx, totalProjects]);
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
@@ -342,7 +376,7 @@ export default function ProjectsSection() {
     const diffX = touchStartX.current - touchEndX;
 
     if (Math.abs(diffX) > 45) {
-      if (diffX > 0 && activeIdx < PROJECTS.length - 1) {
+      if (diffX > 0 && activeIdx < totalProjects - 1) {
         setDirection(1);
         setActiveIdx((prev) => prev + 1);
       } else if (diffX < 0 && activeIdx > 0) {
@@ -389,11 +423,23 @@ export default function ProjectsSection() {
       id="projects"
       className="w-full pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto select-none relative z-10"
     >
-      {/* Clean Header */}
+      {/* Header with Secret Admin Access */}
       <div className="text-center mb-6 sm:mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest mb-2">
-          // 04. PROVEN WORK & SHIPMENTS
+        <div className="inline-flex items-center gap-3 mb-2">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
+            // 04. PROVEN WORK & SHIPMENTS
+          </span>
+
+          {/* Discreet Admin Trigger Button */}
+          <button
+            onClick={() => setIsAdminOpen(true)}
+            className="px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-cyan-500/20 text-slate-400 hover:text-cyan-400 text-[10px] font-mono border border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer flex items-center gap-1"
+            title="Admin CMS (Shortcut: Ctrl+Shift+A)"
+          >
+            <span>🔒 CMS UPLOAD</span>
+          </button>
         </div>
+
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight uppercase leading-none">
           FEATURED <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 bg-clip-text text-transparent">PROJECTS</span>
         </h2>
@@ -409,13 +455,13 @@ export default function ProjectsSection() {
         {/* Ambient Glow */}
         <div
           className="absolute w-80 h-80 rounded-full blur-[110px] pointer-events-none transition-all duration-700 -z-10"
-          style={{ background: currentProject.glowColor }}
+          style={{ background: currentProject.glowColor || "rgba(6, 182, 212, 0.35)" }}
         />
 
-        {/* Morphing Project Card (5 : 7 Balanced Cockpit Split) */}
+        {/* Morphing Project Card */}
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
-            key={currentProject.id}
+            key={currentProject.id || currentProject._id || activeIdx}
             custom={direction}
             variants={cardVariants}
             initial="enter"
@@ -425,15 +471,15 @@ export default function ProjectsSection() {
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
               
-              {/* Left Column: Compact 5-Span Details & Actions */}
+              {/* Left Column: Details & Actions */}
               <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase border ${currentProject.badgeColor}`}>
-                      {currentProject.badge}
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase border ${currentProject.badgeColor || "text-cyan-400 border-cyan-500/30 bg-cyan-500/10"}`}>
+                      {currentProject.badge || "FEATURED PROJECT"}
                     </span>
                     <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
-                      PROJECT {currentProject.step} / 05
+                      PROJECT {String(activeIdx + 1).padStart(2, "0")} / {String(totalProjects).padStart(2, "0")}
                     </span>
                   </div>
 
@@ -449,8 +495,8 @@ export default function ProjectsSection() {
 
                   {/* Engineering Metrics Strip */}
                   <div className="grid grid-cols-3 gap-2 my-4 pt-3.5 border-t border-slate-200 dark:border-white/10">
-                    {currentProject.metrics.map((m) => (
-                      <div key={m.label} className="p-2 rounded-xl bg-slate-100/90 dark:bg-white/[0.04] border border-slate-300/60 dark:border-white/10 text-left">
+                    {(currentProject.metrics || []).map((m, idx) => (
+                      <div key={idx} className="p-2 rounded-xl bg-slate-100/90 dark:bg-white/[0.04] border border-slate-300/60 dark:border-white/10 text-left">
                         <p className="text-[8px] font-mono text-slate-500 dark:text-slate-400 uppercase">{m.label}</p>
                         <p className="text-[11px] font-bold text-slate-900 dark:text-white mt-0.5 truncate">{m.value}</p>
                       </div>
@@ -502,10 +548,10 @@ export default function ProjectsSection() {
                 </div>
               </div>
 
-              {/* Right Column: Spacious 7-Span 3D Cylinder with Visible Side Cards */}
+              {/* Right Column: 3D Cylinder */}
               <div className="lg:col-span-7 flex flex-col items-center justify-center overflow-visible">
                 <Interactive3DCylinder
-                  slides={currentProject.slides}
+                  slides={currentProject.slides || []}
                   onCardClick={(item) =>
                     setModalMedia({
                       type: "image",
@@ -523,7 +569,7 @@ export default function ProjectsSection() {
 
       {/* Stepper Indicators */}
       <div className="mt-6 flex items-center justify-center gap-2">
-        {PROJECTS.map((_, i) => (
+        {projectsList.map((_, i) => (
           <button
             key={i}
             onClick={() => {
@@ -539,7 +585,7 @@ export default function ProjectsSection() {
         ))}
       </div>
 
-      {/* Fullscreen Lightbox Modal */}
+      {/* Lightbox Modal */}
       <AnimatePresence>
         {modalMedia && (
           <motion.div
@@ -587,6 +633,13 @@ export default function ProjectsSection() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Dynamic CMS Admin Modal */}
+      <AdminModal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        onProjectAdded={fetchLiveProjects}
+      />
     </section>
   );
 }
