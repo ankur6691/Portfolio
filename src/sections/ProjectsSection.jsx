@@ -19,7 +19,7 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
   const CARD_HEIGHT = "h-28 sm:h-32 md:h-36 lg:h-38";
   const ORBIT_RADIUS = Math.max(170, Math.round(total * 38));
 
-  // 60 FPS Smooth Rotation Loop
+  // 60 FPS Continuous Spin Loop
   useEffect(() => {
     let prevTime = performance.now();
     const spinLoop = (time) => {
@@ -113,7 +113,7 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
 }
 
 // =========================================================================
-// 2. MAIN PROJECTS SECTION
+// 2. MAIN PROJECTS SECTION (STRICT SECRET CODE TRIGGER)
 // =========================================================================
 export default function ProjectsSection() {
   const [projectsList, setProjectsList] = useState(FALLBACK_PROJECTS);
@@ -125,6 +125,7 @@ export default function ProjectsSection() {
   const containerRef = useRef(null);
   const isThrottled = useRef(false);
   const touchStartX = useRef(0);
+  const keystrokeBuffer = useRef("");
 
   const totalProjects = projectsList.length;
   const currentProject = projectsList[activeIdx] || projectsList[0];
@@ -133,12 +134,13 @@ export default function ProjectsSection() {
   const fetchLiveProjects = useCallback(async () => {
     try {
       const res = await fetch("/api/projects");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         setProjectsList(data);
       }
     } catch {
-      // Gracefully uses FALLBACK_PROJECTS
+      setProjectsList(FALLBACK_PROJECTS);
     }
   }, []);
 
@@ -146,16 +148,31 @@ export default function ProjectsSection() {
     fetchLiveProjects();
   }, [fetchLiveProjects]);
 
-  // Admin Shortcut: Ctrl + Shift + A
+  // ONLY TRIGGER: Secret Passcode "Svvv@2017ankur"
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
-        e.preventDefault();
-        setIsAdminOpen((prev) => !prev);
+    const SECRET_KEY = "svvv@2017ankur";
+
+    const handleGlobalKeyDown = (e) => {
+      // Ignore typing if user is focused on any form input/textarea
+      if (["INPUT", "TEXTAREA"].includes(e.target?.tagName)) return;
+
+      // Only append actual single characters (ignores Shift, Alt, Control keys)
+      if (e.key.length === 1) {
+        keystrokeBuffer.current += e.key.toLowerCase();
+
+        if (keystrokeBuffer.current.length > 30) {
+          keystrokeBuffer.current = keystrokeBuffer.current.slice(-30);
+        }
+
+        if (keystrokeBuffer.current.includes(SECRET_KEY)) {
+          keystrokeBuffer.current = "";
+          setIsAdminOpen(true);
+        }
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, []);
 
   const paginate = useCallback(
@@ -205,7 +222,7 @@ export default function ProjectsSection() {
     return () => el.removeEventListener("wheel", handleWheel);
   }, [activeIdx, totalProjects, paginate]);
 
-  // Touch Swipe Handlers
+  // Touch Handlers
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -248,19 +265,10 @@ export default function ProjectsSection() {
 
   return (
     <section id="projects" className="w-full pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto select-none relative z-10">
-      {/* Header */}
+      {/* Clean Header (Zero Clues for Visitors) */}
       <div className="text-center mb-6 sm:mb-8">
-        <div className="inline-flex items-center gap-3 mb-2">
-          <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
-            // 04. PROVEN WORK & SHIPMENTS
-          </span>
-          <button
-            onClick={() => setIsAdminOpen(true)}
-            className="px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-cyan-500/20 text-slate-400 hover:text-cyan-400 text-[10px] font-mono border border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer"
-            title="Admin CMS (Ctrl+Shift+A)"
-          >
-            🔒 CMS UPLOAD
-          </button>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest mb-2">
+          // 04. PROVEN WORK & SHIPMENTS
         </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight uppercase leading-none">
           FEATURED <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 bg-clip-text text-transparent">PROJECTS</span>
@@ -442,7 +450,7 @@ export default function ProjectsSection() {
         )}
       </AnimatePresence>
 
-      {/* Dynamic CMS Admin Modal */}
+      {/* Secret Dynamic CMS Admin Modal */}
       <AdminModal isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} onProjectAdded={fetchLiveProjects} />
     </section>
   );

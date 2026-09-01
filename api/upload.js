@@ -10,7 +10,7 @@ cloudinary.config({
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "25mb",
+      sizeLimit: "30mb", // PDF aur HD images ke liye safe limit
     },
   },
 };
@@ -21,15 +21,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { image, folder = "portfolio/general" } = req.body;
+    const { file, folder = "portfolio/general" } = req.body;
 
-    if (!image) {
-      return res.status(400).json({ error: "No image provided" });
+    if (!file) {
+      return res.status(400).json({ error: "No file provided" });
     }
 
-    // Cloudinary automatically creates folder if it doesn't exist
-    const uploadResponse = await cloudinary.uploader.upload(image, {
+    // resource_type "auto" se Images, PDF, SVG, ZIP sab Cloudinary support karega
+    const uploadResponse = await cloudinary.uploader.upload(file, {
       folder: folder,
+      resource_type: "auto",
       transformation: [{ quality: "auto", fetch_format: "auto" }],
     });
 
@@ -37,6 +38,8 @@ export default async function handler(req, res) {
       success: true,
       url: uploadResponse.secure_url,
       public_id: uploadResponse.public_id,
+      format: uploadResponse.format || "file",
+      resource_type: uploadResponse.resource_type,
     });
   } catch (error) {
     return res.status(500).json({ error: "Upload failed", details: error.message });

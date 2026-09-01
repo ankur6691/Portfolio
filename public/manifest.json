@@ -1,0 +1,9 @@
+{
+  "short_name": "Portfolio",
+  "name": "Ankur Portfolio",
+  "icons": [],
+  "start_url": "/",
+  "background_color": "#080a14",
+  "theme_color": "#06b6d4",
+  "display": "standalone"
+}
