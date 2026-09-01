@@ -1,159 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+// src/sections/ProjectsSection.jsx
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AdminModal from "../components/AdminModal";
+import { FALLBACK_PROJECTS } from "../data/fallbackProjects";
 
 // =========================================================================
-// 1. FALLBACK PROJECTS DATABASE (Active if DB is loading or empty)
-// =========================================================================
-const FALLBACK_PROJECTS = [
-  // 01. MADHYA BHARAT ASSOCIATES (LIVE PRODUCTION)
-  {
-    id: "madhya-bharat",
-    step: "01",
-    category: "CLIENT PRODUCTION",
-    badge: "LIVE PRODUCTION",
-    badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
-    glowColor: "rgba(16, 185, 129, 0.35)",
-    title: "Madhya Bharat Associates",
-    tagline: "Corporate Legal Enforcement & SARFAESI Recovery Portal",
-    description:
-      "Enterprise legal enforcement web portal built for financial institutions and NBFCs. Implements compliance modules for SARFAESI Act 2002, RRC revenue recovery, interactive advocate directories, and direct client consultation pipelines.",
-    metrics: [
-      { label: "Deployment", value: "Vercel Live" },
-      { label: "Performance", value: "98/100 Score" },
-      { label: "Compliance", value: "SARFAESI 2002" },
-    ],
-    liveUrl: "https://madhya-bharat-associates.vercel.app",
-    githubUrl: null,
-    videoUrl: null,
-    slides: [
-      { title: "Hero Portal", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167863/Disclaimer_ktchkm.png" },
-      { title: "About & Stats", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167864/Front_Page_hemykz.png" },
-      { title: "Expertise Matrix", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167863/Expertise_frpwhy.png" },
-      { title: "Legal Council", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167864/Legal_Team_eoh9wq.png" },
-      { title: "Consultation Form", img: "https://res.cloudinary.com/dsofipudf/image/upload/f_auto,q_auto/v1788167863/contact_page_kz3stt.png" },
-    ],
-  },
-
-  // 02. CLARITAS GLOBAL (ENTERPRISE EDTECH)
-  {
-    id: "claritas",
-    step: "02",
-    category: "ENTERPRISE EDTECH",
-    badge: "POSTGRESQL & RBAC",
-    badgeColor: "text-purple-400 border-purple-500/30 bg-purple-500/10",
-    glowColor: "rgba(168, 85, 247, 0.35)",
-    title: "Claritas Global School Ecosystem",
-    tagline: "Centralized Multi-Tenant School Management Platform",
-    description:
-      "Large-scale educational management platform engineered with granular Role-Based Access Control (RBAC). Features dedicated isolated dashboards for Global Super-Admins, Principals, Teachers, and differentiated workspaces for 10th, 11th, and 12th standard students.",
-    metrics: [
-      { label: "Database", value: "PostgreSQL" },
-      { label: "Dashboards", value: "4 Isolated RBAC" },
-      { label: "Scope", value: "Global Schools" },
-    ],
-    liveUrl: null,
-    githubUrl: "https://github.com/ankur6691/Next_Claritus",
-    videoUrl: null,
-    slides: [
-      { title: "Super-Admin Hub", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80" },
-      { title: "Principal Console", img: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80" },
-      { title: "Teacher Workspace", img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80" },
-      { title: "Student 10-12 Portal", img: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80" },
-      { title: "Relational Schemas", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80" },
-    ],
-  },
-
-  // 03. AKMENU (STARTUP POS & BILLING)
-  {
-    id: "akmenu",
-    step: "03",
-    category: "STARTUP MVP",
-    badge: "15-20 RESTAURANTS AUDITED",
-    badgeColor: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    glowColor: "rgba(245, 158, 11, 0.35)",
-    title: "AKMenu Dining & POS Engine",
-    tagline: "Cloud Kitchen & Restaurant Billing Operating System",
-    description:
-      "High-speed point-of-sale and kitchen billing engine engineered as an agile Petpooja alternative. Personally field-tested across 15 to 20 commercial dining restaurants to streamline Kitchen Order Tickets (KOT), fast invoicing, and real-time menu management.",
-    metrics: [
-      { label: "Field Tested", value: "15-20 Outlets Audited" },
-      { label: "Execution", value: "<150ms Invoicing" },
-      { label: "Operations", value: "KOT & Inventory" },
-    ],
-    liveUrl: null,
-    githubUrl: "https://github.com/ankur6691",
-    videoUrl: null,
-    slides: [
-      { title: "POS Touch Terminal", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80" },
-      { title: "Live KOT Dispatch", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" },
-      { title: "Table Matrix", img: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=800&q=80" },
-      { title: "Fast Billing", img: "https://images.unsplash.com/photo-1556742049-0a67e557224f?w=800&q=80" },
-      { title: "Inventory Engine", img: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=800&q=80" },
-    ],
-  },
-
-  // 04. CHATIFY (CLIENT MESSENGER WITH VIDEO)
-  {
-    id: "chatify",
-    step: "04",
-    category: "CLIENT WORK",
-    badge: "LINKEDIN VIDEO WALKTHROUGH",
-    badgeColor: "text-pink-400 border-pink-500/30 bg-pink-500/10",
-    glowColor: "rgba(236, 72, 153, 0.35)",
-    title: "Chatify Instant Messenger",
-    tagline: "Low-Latency WebSocket Bi-Directional Pipeline",
-    description:
-      "Client messaging application engineered with event-driven WebSockets for instantaneous text exchange, active typing telemetry, and persistent session state. Complete system breakdown and screen walkthrough documented via LinkedIn video.",
-    metrics: [
-      { label: "Protocol", value: "WebSockets" },
-      { label: "Walkthrough", value: "LinkedIn Video" },
-      { label: "Latency", value: "Realtime Sync" },
-    ],
-    liveUrl: null,
-    githubUrl: "https://github.com/Tech-Collaboration-Team/chatify",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    slides: [
-      { title: "Live Chat Feed", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" },
-      { title: "WebSocket Mesh", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&q=80" },
-      { title: "Typing Telemetry", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80" },
-      { title: "Auth Pipeline", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80" },
-      { title: "Persistent Storage", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80" },
-    ],
-  },
-
-  // 05. SAFEHER (OPEN SOURCE SOS)
-  {
-    id: "safeher",
-    step: "05",
-    category: "OPEN SOURCE",
-    badge: "GEOLOCATION SOS",
-    badgeColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
-    glowColor: "rgba(6, 182, 212, 0.35)",
-    title: "SafeHer SOS Emergency Network",
-    tagline: "Rapid Geolocation Alert & Safety Pipeline",
-    description:
-      "Open-source personal safety application engineered for single-touch distress signaling, live GPS coordinate broadcasts to emergency contacts, and automated emergency routing via secure API webhooks.",
-    metrics: [
-      { label: "Response", value: "Instant GPS SOS" },
-      { label: "License", value: "Open Source" },
-      { label: "Platform", value: "Mobile Geofence" },
-    ],
-    liveUrl: null,
-    githubUrl: "https://github.com/Tech-Collaboration-Team/women-safety-ai-system",
-    videoUrl: null,
-    slides: [
-      { title: "1-Tap SOS Trigger", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80" },
-      { title: "Live GPS Mesh", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80" },
-      { title: "Webhook Dispatch", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80" },
-      { title: "Emergency Hub", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80" },
-      { title: "Geofence Siren", img: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&q=80" },
-    ],
-  },
-];
-
-// =========================================================================
-// 2. PERFECTED 3D PANORAMIC CYLINDER
+// 1. 3D CYLINDER CAROUSEL COMPONENT
 // =========================================================================
 function Interactive3DCylinder({ slides = [], onCardClick }) {
   const [rotation, setRotation] = useState(0);
@@ -165,8 +17,9 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
   const total = slides.length || 1;
   const CARD_WIDTH = "w-44 sm:w-52 md:w-56 lg:w-60";
   const CARD_HEIGHT = "h-28 sm:h-32 md:h-36 lg:h-38";
-  const ORBIT_RADIUS = 190;
+  const ORBIT_RADIUS = Math.max(170, Math.round(total * 38));
 
+  // 60 FPS Smooth Rotation Loop
   useEffect(() => {
     let prevTime = performance.now();
     const spinLoop = (time) => {
@@ -190,13 +43,10 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
   const handlePointerMove = (e) => {
     if (!isDragging) return;
     const currentX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    const diff = currentX - startX.current;
-    setRotation(lastRotation.current + diff * 0.45);
+    setRotation(lastRotation.current + (currentX - startX.current) * 0.45);
   };
 
-  const handlePointerUp = () => {
-    setIsDragging(false);
-  };
+  const handlePointerUp = () => setIsDragging(false);
 
   return (
     <div
@@ -232,7 +82,7 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
               }}
               className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 shadow-[0_12px_30px_rgba(0,0,0,0.85)] bg-slate-950 group cursor-pointer hover:border-cyan-400 hover:scale-105 transition-all flex flex-col"
             >
-              {/* Mini Browser Header */}
+              {/* Mini Browser Bar */}
               <div className="h-4 sm:h-5 bg-slate-900/95 border-b border-white/10 px-2 flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-400/80" />
@@ -245,11 +95,12 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
                 <span className="text-[8px] text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
               </div>
 
-              {/* Screenshot Viewport */}
+              {/* Viewport Screenshot */}
               <div className="flex-1 w-full relative overflow-hidden bg-slate-900">
                 <img
                   src={item.img}
                   alt={item.title}
+                  loading="lazy"
                   className="w-full h-full object-cover object-top pointer-events-none group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
@@ -262,7 +113,7 @@ function Interactive3DCylinder({ slides = [], onCardClick }) {
 }
 
 // =========================================================================
-// 3. MAIN PROJECTS SECTION (DYNAMIC DATABASE CONNECTED)
+// 2. MAIN PROJECTS SECTION
 // =========================================================================
 export default function ProjectsSection() {
   const [projectsList, setProjectsList] = useState(FALLBACK_PROJECTS);
@@ -275,24 +126,27 @@ export default function ProjectsSection() {
   const isThrottled = useRef(false);
   const touchStartX = useRef(0);
 
-  // MongoDB se Live Projects Mangwana
-  const fetchLiveProjects = async () => {
+  const totalProjects = projectsList.length;
+  const currentProject = projectsList[activeIdx] || projectsList[0];
+
+  // Live Database Fetching
+  const fetchLiveProjects = useCallback(async () => {
     try {
       const res = await fetch("/api/projects");
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         setProjectsList(data);
       }
-    } catch (e) {
-      console.log("Using fallback projects");
+    } catch {
+      // Gracefully uses FALLBACK_PROJECTS
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchLiveProjects();
-  }, []);
+  }, [fetchLiveProjects]);
 
-  // Secret Keyboard Shortcut: Ctrl + Shift + A
+  // Admin Shortcut: Ctrl + Shift + A
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
@@ -304,13 +158,13 @@ export default function ProjectsSection() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const totalProjects = projectsList.length;
-  const currentProject = projectsList[activeIdx] || projectsList[0];
-
-  const paginate = (newDirection) => {
-    setDirection(newDirection);
-    setActiveIdx((prev) => prev + newDirection);
-  };
+  const paginate = useCallback(
+    (newDirection) => {
+      setDirection(newDirection);
+      setActiveIdx((prev) => prev + newDirection);
+    },
+    []
+  );
 
   // Wheel Interceptor
   useEffect(() => {
@@ -320,69 +174,47 @@ export default function ProjectsSection() {
     let wheelBuffer = 0;
     let timer = null;
 
-    const handleWheelEvent = (e) => {
+    const handleWheel = (e) => {
       if (window.innerWidth < 1024) return;
-
       wheelBuffer += e.deltaY;
       clearTimeout(timer);
       timer = setTimeout(() => {
         wheelBuffer = 0;
       }, 150);
 
-      if (wheelBuffer > 35) {
-        if (activeIdx < totalProjects - 1) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          if (!isThrottled.current) {
-            isThrottled.current = true;
-            paginate(1);
-            wheelBuffer = 0;
-            setTimeout(() => {
-              isThrottled.current = false;
-            }, 600);
-          }
+      if (wheelBuffer > 35 && activeIdx < totalProjects - 1) {
+        e.preventDefault();
+        if (!isThrottled.current) {
+          isThrottled.current = true;
+          paginate(1);
+          wheelBuffer = 0;
+          setTimeout(() => (isThrottled.current = false), 600);
         }
-      } else if (wheelBuffer < -35) {
-        if (activeIdx > 0) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          if (!isThrottled.current) {
-            isThrottled.current = true;
-            paginate(-1);
-            wheelBuffer = 0;
-            setTimeout(() => {
-              isThrottled.current = false;
-            }, 600);
-          }
+      } else if (wheelBuffer < -35 && activeIdx > 0) {
+        e.preventDefault();
+        if (!isThrottled.current) {
+          isThrottled.current = true;
+          paginate(-1);
+          wheelBuffer = 0;
+          setTimeout(() => (isThrottled.current = false), 600);
         }
       }
     };
 
-    el.addEventListener("wheel", handleWheelEvent, { passive: false });
-    return () => {
-      el.removeEventListener("wheel", handleWheelEvent);
-      clearTimeout(timer);
-    };
-  }, [activeIdx, totalProjects]);
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, [activeIdx, totalProjects, paginate]);
 
+  // Touch Swipe Handlers
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const diffX = touchStartX.current - touchEndX;
-
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diffX) > 45) {
-      if (diffX > 0 && activeIdx < totalProjects - 1) {
-        setDirection(1);
-        setActiveIdx((prev) => prev + 1);
-      } else if (diffX < 0 && activeIdx > 0) {
-        setDirection(-1);
-        setActiveIdx((prev) => prev - 1);
-      }
+      if (diffX > 0 && activeIdx < totalProjects - 1) paginate(1);
+      else if (diffX < 0 && activeIdx > 0) paginate(-1);
     }
   };
 
@@ -410,36 +242,26 @@ export default function ProjectsSection() {
       opacity: 0,
       filter: "blur(6px)",
       scale: 0.98,
-      transition: {
-        y: { duration: 0.25, ease: "easeInOut" },
-        filter: { duration: 0.22 },
-        opacity: { duration: 0.18 },
-      },
+      transition: { y: { duration: 0.25 }, filter: { duration: 0.22 }, opacity: { duration: 0.18 } },
     }),
   };
 
   return (
-    <section
-      id="projects"
-      className="w-full pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto select-none relative z-10"
-    >
-      {/* Header with Secret Admin Access */}
+    <section id="projects" className="w-full pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto select-none relative z-10">
+      {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
         <div className="inline-flex items-center gap-3 mb-2">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
+          <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
             // 04. PROVEN WORK & SHIPMENTS
           </span>
-
-          {/* Discreet Admin Trigger Button */}
           <button
             onClick={() => setIsAdminOpen(true)}
-            className="px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-cyan-500/20 text-slate-400 hover:text-cyan-400 text-[10px] font-mono border border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer flex items-center gap-1"
-            title="Admin CMS (Shortcut: Ctrl+Shift+A)"
+            className="px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-cyan-500/20 text-slate-400 hover:text-cyan-400 text-[10px] font-mono border border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer"
+            title="Admin CMS (Ctrl+Shift+A)"
           >
-            <span>🔒 CMS UPLOAD</span>
+            🔒 CMS UPLOAD
           </button>
         </div>
-
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight uppercase leading-none">
           FEATURED <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 bg-clip-text text-transparent">PROJECTS</span>
         </h2>
@@ -452,7 +274,7 @@ export default function ProjectsSection() {
         onTouchEnd={handleTouchEnd}
         className="relative w-full max-w-6xl mx-auto flex items-center justify-center min-h-[480px] sm:min-h-[520px]"
       >
-        {/* Ambient Glow */}
+        {/* Glow */}
         <div
           className="absolute w-80 h-80 rounded-full blur-[110px] pointer-events-none transition-all duration-700 -z-10"
           style={{ background: currentProject.glowColor || "rgba(6, 182, 212, 0.35)" }}
@@ -470,8 +292,7 @@ export default function ProjectsSection() {
             className="w-full p-6 sm:p-8 lg:p-10 rounded-3xl bg-white/85 dark:bg-[#080a14]/95 border border-slate-300/80 dark:border-white/15 backdrop-blur-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-              
-              {/* Left Column: Details & Actions */}
+              {/* Left Column: Details */}
               <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -493,7 +314,7 @@ export default function ProjectsSection() {
                     {currentProject.description}
                   </p>
 
-                  {/* Engineering Metrics Strip */}
+                  {/* Metrics */}
                   <div className="grid grid-cols-3 gap-2 my-4 pt-3.5 border-t border-slate-200 dark:border-white/10">
                     {(currentProject.metrics || []).map((m, idx) => (
                       <div key={idx} className="p-2 rounded-xl bg-slate-100/90 dark:bg-white/[0.04] border border-slate-300/60 dark:border-white/10 text-left">
@@ -504,14 +325,14 @@ export default function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Actions */}
                 <div className="flex flex-wrap items-center gap-2.5 pt-1">
                   {currentProject.liveUrl && (
                     <a
                       href={currentProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-mono font-bold text-xs shadow-lg shadow-amber-900/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 text-black font-mono font-bold text-xs shadow-lg shadow-amber-900/20 hover:scale-105 active:scale-95 transition-all"
                     >
                       <span>VISIT LIVE PORTAL</span>
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -519,22 +340,14 @@ export default function ProjectsSection() {
                       </svg>
                     </a>
                   )}
-
                   {currentProject.videoUrl && (
                     <button
-                      onClick={() =>
-                        setModalMedia({
-                          type: "video",
-                          url: currentProject.videoUrl,
-                          title: currentProject.title,
-                        })
-                      }
+                      onClick={() => setModalMedia({ type: "video", url: currentProject.videoUrl, title: currentProject.title })}
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-mono font-bold text-xs border border-pink-500/30 transition-all cursor-pointer"
                     >
                       <span>WATCH DEMO ▶</span>
                     </button>
                   )}
-
                   {currentProject.githubUrl && (
                     <a
                       href={currentProject.githubUrl}
@@ -561,7 +374,6 @@ export default function ProjectsSection() {
                   }
                 />
               </div>
-
             </div>
           </motion.div>
         </AnimatePresence>
@@ -577,9 +389,7 @@ export default function ProjectsSection() {
               setActiveIdx(i);
             }}
             className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-              i === activeIdx
-                ? "w-8 bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.6)]"
-                : "w-2 bg-slate-300 dark:bg-white/20"
+              i === activeIdx ? "w-8 bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.6)]" : "w-2 bg-slate-300 dark:bg-white/20"
             }`}
           />
         ))}
@@ -603,9 +413,7 @@ export default function ProjectsSection() {
               className="relative max-w-5xl w-full max-h-[85vh] rounded-3xl overflow-hidden bg-slate-900 border border-white/20 shadow-2xl flex flex-col cursor-default"
             >
               <div className="p-3.5 bg-slate-950 border-b border-white/10 flex items-center justify-between">
-                <span className="text-xs font-mono text-cyan-400 font-bold uppercase truncate pr-4">
-                  {modalMedia.title}
-                </span>
+                <span className="text-xs font-mono text-cyan-400 font-bold uppercase truncate pr-4">{modalMedia.title}</span>
                 <button
                   onClick={() => setModalMedia(null)}
                   className="p-1 px-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors text-xs font-mono cursor-pointer"
@@ -635,11 +443,7 @@ export default function ProjectsSection() {
       </AnimatePresence>
 
       {/* Dynamic CMS Admin Modal */}
-      <AdminModal
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        onProjectAdded={fetchLiveProjects}
-      />
+      <AdminModal isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} onProjectAdded={fetchLiveProjects} />
     </section>
   );
 }

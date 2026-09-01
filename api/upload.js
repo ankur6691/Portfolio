@@ -10,7 +10,7 @@ cloudinary.config({
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb", // 5 screenshots ke liye safe memory limit
+      sizeLimit: "25mb",
     },
   },
 };
@@ -21,13 +21,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { image, folder = "portfolio/projects" } = req.body;
+    const { image, folder = "portfolio/general" } = req.body;
 
     if (!image) {
-      return res.status(400).json({ error: "No image data provided" });
+      return res.status(400).json({ error: "No image provided" });
     }
 
-    // Cloudinary upload pipeline with auto-compression
+    // Cloudinary automatically creates folder if it doesn't exist
     const uploadResponse = await cloudinary.uploader.upload(image, {
       folder: folder,
       transformation: [{ quality: "auto", fetch_format: "auto" }],
@@ -39,7 +39,6 @@ export default async function handler(req, res) {
       public_id: uploadResponse.public_id,
     });
   } catch (error) {
-    console.error("Cloudinary Upload Error:", error);
-    return res.status(500).json({ error: "Image upload failed", details: error.message });
+    return res.status(500).json({ error: "Upload failed", details: error.message });
   }
 }
